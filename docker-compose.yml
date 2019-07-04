@@ -1,0 +1,6 @@
+version: '3.3'
+
+services:
+  rs:
+    image: red-sent
+    command: redis-server /data/sentinel/sent.conf --sentinel
