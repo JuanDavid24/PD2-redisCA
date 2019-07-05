@@ -1,6 +1,24 @@
 version: '3.3'
 
 services:
-  rs:
-    image: red-sent
-    command: redis-server /data/sentinel/sent.conf --sentinel
+  master:
+    image: red-sent-m:latest
+    build:
+      context: ./master
+    networks:
+      - redis-nwk
+    command: bash -c "redis-server /data/redis.conf && redis-sentinel /data/sentinel.conf"
+      -
+
+
+  slave:
+    image: red-sent-s:latest
+    build:
+      context: ./slave
+    networks:
+      - redis-nwk
+    command: bash -c "redis-server /data/redis.conf && redis-sentinel /data/sentinel.conf"
+
+networks:
+  redis-nwk:
+    driver: bridge
